@@ -1,4 +1,4 @@
-<html>
+<!-- <html>
     <body>
         <form action="{{url_for('predict_datapoint')}}" method="POST">
             <input type="text" name="temperature" placeholder="Temperature" required="required"/><br>
@@ -15,4 +15,112 @@
         </form>
         <h2>the FWI prediction is : {{results}}</h2>
     </body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #a8c0ff, #3f2b96);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background: #ffffff;
+            padding: 30px;
+            width: 350px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        .form-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #3f2b96;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #3f2b96;
+            box-shadow: 0px 0px 5px rgba(63, 43, 150, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #3f2b96;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #5d40d6;
+            transform: scale(1.03);
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            color: #fff;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <h1>FWI Predictor</h1>
+
+        <form action="{{url_for('predict_datapoint')}}" method="POST">
+            <input type="text" name="temperature" placeholder="Temperature" required/>
+            <input type="text" name="RH" placeholder="Relative Humidity (RH)" required/>
+            <input type="text" name="WS" placeholder="Wind Speed (WS)" required/>
+            <input type="text" name="Rain" placeholder="Rain" required/>
+            <input type="text" name="FFMC" placeholder="FFMC" required/>
+            <input type="text" name="DMC" placeholder="DMC" required/>
+            <input type="text" name="ISI" placeholder="ISI" required/>
+            <input type="text" name="Classes" placeholder="Classes" required/>
+            <input type="text" name="Region" placeholder="Region" required/>
+
+            <button type="submit">Predict</button>
+        </form>
+    </div>
+
+    <h2>The FWI prediction is: {{results}}</h2>
+</body>
 </html>
