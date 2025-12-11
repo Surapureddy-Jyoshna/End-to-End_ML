@@ -1,4 +1,64 @@
-<h1>Welcome to my home page</h1>
+<!-- <h1>Welcome to my home page</h1>
 <a href="/predictdata">
     <button>Go to Predict Data</button>
-</a>
+</a> -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FWI Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #141E30, #243B55);
+            color: white;
+        }
+
+        .dashboard-container {
+            display: flex;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+
+        .dashboard-card {
+            background: #ffffff10;
+            backdrop-filter: blur(8px);
+            padding: 50px;
+            width: 500px;
+            border-radius: 22px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        button {
+            padding: 15px 30px;
+            background: #00c6ff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-card">
+            <h1 style="font-size: 55px; margin-bottom: 20px; font-weight: bold;">
+                Welcome to the FWI Dashboard
+            </h1>
+
+            <p style="font-size: 18px; margin-bottom: 25px;">
+                Start predicting your Fire Weather Index safely and easily.
+            </p>
+
+            <a href="/predictdata">
+                <button>Open Prediction Tool</button>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

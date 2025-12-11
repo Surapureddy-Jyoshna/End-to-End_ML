@@ -1,4 +1,4 @@
-<html>
+<!-- <html>
 <head>
     <style>
         body {
@@ -93,4 +93,371 @@
 
     <h2>The FWI prediction is: {{results}}</h2>
 </body>
+</html> -->
+
+
+
+
+<html>
+<head>
+    <style>
+        body {
+            font-family: "Inter", Arial, sans-serif;
+            background: linear-gradient(135deg, #2C3E50, #4CA1AF);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* TOP-LEFT back link */
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            transition: 0.25s ease;
+        }
+        .back-link:hover {
+            opacity: 0.7;
+            transform: translateX(-3px);
+        }
+
+        /* FORM + RESULT container */
+        .layout {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+            animation: fadeIn 0.6s ease;
+        }
+
+        /* FORM CARD */
+        .form-card {
+            background: #ffffffee;
+            padding: 25px 28px;
+            width: 330px;
+            border-radius: 16px;
+            box-shadow: 0 10px 26px rgba(0,0,0,0.25);
+            animation: floatUp 0.7s ease;
+            transition: 0.3s ease;
+        }
+        .form-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .form-card h1 {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #2C3E50;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px;
+            margin: 6px 0;
+            border-radius: 10px;
+            border: 1.5px solid #d0d0d0;
+            font-size: 14px;
+            transition: 0.25s ease;
+            background: #f7f7f7;
+        }
+
+        input:focus {
+            border-color: #4CA1AF;
+            background: white;
+            box-shadow: 0 0 6px rgba(76,161,175,0.45);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: #4CA1AF;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            margin-top: 8px;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+        button:hover {
+            background: #3a8995;
+            transform: scale(1.04);
+        }
+
+        /* RIGHT-SIDE prediction BOX */
+        .result-box {
+            width: 260px;
+            height: 220px;
+            background: rgba(255,255,255,0.18);
+            backdrop-filter: blur(6px);
+            border-radius: 18px;
+            box-shadow: 0 10px 26px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+            animation: floatUp 0.7s ease;
+            color: white;
+        }
+
+        .result-box h2 {
+            margin: 0 0 12px 0;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .result-output {
+            background: rgba(255,255,255,0.35);
+            border: none;
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            color: #2C3E50;
+            outline: none;
+            animation: pop 0.4s ease;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes floatUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pop {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        /* 2-COLUMN GRID */
+       .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px 18px; /* row-gap | column-gap */
+        }
+
+/* Form field wrapper */
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2C3E50;
+            margin-bottom: 4px;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1.5px solid #ccc;
+            background: #f8f8f8;
+        }
+
+        .predict-btn {
+            grid-column: 1 / 3; /* button spans both columns */
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            background: #4CA1AF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .predict-btn:hover {
+            background: #3a8995;
+            transform: scale(1.03);
+        }
+
+        /* INFO BUTTON TOP-RIGHT */
+.info-btn {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 26px;
+    cursor: pointer;
+    color: white;
+    transition: 0.3s;
+}
+.info-btn:hover {
+    transform: scale(1.1);
+    opacity: 0.85;
+}
+
+/* MODAL BACKDROP */
+.info-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(6px);
+    background: rgba(0,0,0,0.35);
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Info button (top right corner) */
+.info-btn {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 26px;
+    cursor: pointer;
+    color: white;
+    transition: 0.3s;
+}
+.info-btn:hover {
+    transform: scale(1.1);
+    opacity: 0.85;
+}
+
+    </style>
+</head>
+
+<body>
+    <!-- TOP-RIGHT INFO BUTTON -->
+<div class="info-btn" onclick="openInfo()">ℹ️</div>
+
+<!-- INFO POPUP / MODAL -->
+<div id="infoModal" class="info-modal">
+    <div class="info-content">
+        <h2>Input Information</h2>
+
+        <ul>
+            <li><b>Temperature:</b> 22°C – 42°C</li>
+            <li><b>Relative Humidity (RH):</b> 21% – 90%</li>
+            <li><b>Wind Speed (WS):</b> 6 – 29 km/h</li>
+            <li><b>Rain:</b> 0 – 16.8 mm</li>
+            <li><b>FFMC:</b> 28.6 – 92.5</li>
+            <li><b>DMC:</b> 1.1 – 65.9</li>
+            <li><b>ISI (from Kaggle dataset):</b> Refer to dataset ranges</li>
+            <li><b>Classes:</b> fire = 0 | not-fire = 1</li>
+            <li><b>Region:</b> Algerian = 0 | Sidi-Bel-Abbes = 1</li>
+        </ul>
+
+        <button class="close-btn" onclick="closeInfo()">Close</button>
+    </div>
+</div>
+
+    <!-- TOP LEFT BACK BUTTON -->
+    <a href="/" class="back-link">← Back to Dashboard</a>
+
+    <!-- CENTERED FORM + RESULT -->
+    <div class="layout">
+
+        <!-- LEFT = FORM -->
+        <div class="form-card">
+            <h1>FWI Predictor</h1>
+
+            <form action="{{ url_for('predict_datapoint') }}" method="POST" class="grid-container">
+
+                <div class="field">
+                    <label>Temperature</label>
+                    <input type="text" name="temperature"
+                        value="{{ request.form.get('temperature','') }}" required/>
+                </div>
+            
+                <div class="field">
+                    <label>Relative Humidity (RH)</label>
+                    <input type="text" name="RH"
+                        value="{{ request.form.get('RH','') }}" required/>
+                </div>
+            
+                <div class="field">
+                    <label>Wind Speed (WS)</label>
+                    <input type="text" name="WS"
+                        value="{{ request.form.get('WS','') }}" required/>
+                </div>
+            
+                <div class="field">
+                    <label>Rain</label>
+                    <input type="text" name="Rain"
+                        value="{{ request.form.get('Rain','') }}" required/>
+                </div>
+            
+                <div class="field">
+                    <label>FFMC</label>
+                    <input type="text" name="FFMC"
+                        value="{{ request.form.get('FFMC','') }}" required/>
+                </div>
+            
+                <div class="field">
+                    <label>DMC</label>
+                    <input type="text" name="DMC"
+                        value="{{ request.form.get('DMC','') }}" required/>
+                </div>
+            
+                <div class="field">
+                    <label>ISI</label>
+                    <input type="text" name="ISI"
+                        value="{{ request.form.get('ISI','') }}" required/>
+                </div>
+            
+                <div class="field">
+                    <label>Classes</label>
+                    <input type="text" name="Classes"
+                        value="{{ request.form.get('Classes','') }}" required/>
+                </div>
+            
+                <div class="field">
+                    <label>Region</label>
+                    <input type="text" name="Region"
+                        value="{{ request.form.get('Region','') }}" required/>
+                </div>
+            
+                <button type="submit" class="predict-btn">Predict</button>
+            
+            </form>
+            
+            
+            
+        </div>
+
+        <!-- RIGHT = PREDICTION BOX -->
+        <div class="result-box">
+            <h2>Prediction</h2>
+
+            {% if results %}
+                <input class="result-output" value="{{ results }}" readonly />
+            {% else %}
+                <input class="result-output" value="Waiting..." readonly />
+            {% endif %}
+        </div>
+
+    </div>
+    <script>
+        function openInfo() {
+            document.getElementById('infoModal').style.display = 'flex';
+        }
+        function closeInfo() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+        </script>
+        
+
+</body>
 </html>
+
+
