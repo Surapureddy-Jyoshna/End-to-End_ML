@@ -300,7 +300,16 @@
 .info-content b {
     color: #ffffff;
 }
+.error-message{
+    color: red;
+    font-size: 12px;
+    margin-top: 3px;
+    display: none;
+}
 
+.input-error{
+    border: 2px solid red !important;
+}
     </style>
 </head>
 
@@ -343,58 +352,103 @@
             <form action="{{ url_for('predict_datapoint') }}" method="POST" class="grid-container">
 
                 <div class="field">
-                    <label>Temperature</label>
-                    <input type="text" name="temperature"
-                        value="{{ request.form.get('temperature','') }}" required/>
-                </div>
-            
-                <div class="field">
-                    <label>Relative Humidity (RH)</label>
-                    <input type="text" name="RH"
-                        value="{{ request.form.get('RH','') }}" required/>
-                </div>
-            
-                <div class="field">
-                    <label>Wind Speed (WS)</label>
-                    <input type="text" name="WS"
-                        value="{{ request.form.get('WS','') }}" required/>
-                </div>
-            
-                <div class="field">
-                    <label>Rain</label>
-                    <input type="text" name="Rain"
-                        value="{{ request.form.get('Rain','') }}" required/>
-                </div>
-            
-                <div class="field">
-                    <label>FFMC</label>
-                    <input type="text" name="FFMC"
-                        value="{{ request.form.get('FFMC','') }}" required/>
-                </div>
-            
-                <div class="field">
-                    <label>DMC</label>
-                    <input type="text" name="DMC"
-                        value="{{ request.form.get('DMC','') }}" required/>
-                </div>
-            
-                <div class="field">
-                    <label>ISI</label>
-                    <input type="text" name="ISI"
-                        value="{{ request.form.get('ISI','') }}" required/>
-                </div>
-            
-                <div class="field">
-                    <label>Classes</label>
-                    <input type="text" name="Classes"
-                        value="{{ request.form.get('Classes','') }}" required/>
-                </div>
-            
-                <div class="field">
-                    <label>Region</label>
-                    <input type="text" name="Region"
-                        value="{{ request.form.get('Region','') }}" required/>
-                </div>
+    <label>Temperature</label>
+    <input type="number" step="any" name="temperature"
+           min="22" max="42"
+           oninput="validateInput(this,22,42,'tempError')"
+           value="{{ request.form.get('temperature','') }}" required/>
+    <span class="error-message" id="tempError">
+        Enter value between 22 and 42
+    </span>
+</div>
+
+<div class="field">
+    <label>Relative Humidity (RH)</label>
+    <input type="number" step="any" name="RH"
+           min="21" max="90"
+           oninput="validateInput(this,21,90,'rhError')"
+           value="{{ request.form.get('RH','') }}" required/>
+    <span class="error-message" id="rhError">
+        Enter value between 21 and 90
+    </span>
+</div>
+
+<div class="field">
+    <label>Wind Speed (WS)</label>
+    <input type="number" step="any" name="WS"
+           min="6" max="29"
+           oninput="validateInput(this,6,29,'wsError')"
+           value="{{ request.form.get('WS','') }}" required/>
+    <span class="error-message" id="wsError">
+        Enter value between 6 and 29
+    </span>
+</div>
+
+<div class="field">
+    <label>Rain</label>
+    <input type="number" step="any" name="Rain"
+           min="0" max="16.8"
+           oninput="validateInput(this,0,16.8,'rainError')"
+           value="{{ request.form.get('Rain','') }}" required/>
+    <span class="error-message" id="rainError">
+        Enter value between 0 and 16.8
+    </span>
+</div>
+
+<div class="field">
+    <label>FFMC</label>
+    <input type="number" step="any" name="FFMC"
+           min="28.6" max="92.5"
+           oninput="validateInput(this,28.6,92.5,'ffmcError')"
+           value="{{ request.form.get('FFMC','') }}" required/>
+    <span class="error-message" id="ffmcError">
+        Enter value between 28.6 and 92.5
+    </span>
+</div>
+
+<div class="field">
+    <label>DMC</label>
+    <input type="number" step="any" name="DMC"
+           min="1.1" max="65.9"
+           oninput="validateInput(this,1.1,65.9,'dmcError')"
+           value="{{ request.form.get('DMC','') }}" required/>
+    <span class="error-message" id="dmcError">
+        Enter value between 1.1 and 65.9
+    </span>
+</div>
+
+<div class="field">
+    <label>ISI</label>
+    <input type="number" step="any" name="ISI"
+           min="0" max="20"
+           oninput="validateInput(this,0,20,'isiError')"
+           value="{{ request.form.get('ISI','') }}" required/>
+    <span class="error-message" id="isiError">
+        Enter value between 0 and 20
+    </span>
+</div>
+
+<div class="field">
+    <label>Classes</label>
+    <input type="number" name="Classes"
+           min="0" max="1"
+           oninput="validateInput(this,0,1,'classError')"
+           value="{{ request.form.get('Classes','') }}" required/>
+    <span class="error-message" id="classError">
+        Enter only 0 or 1
+    </span>
+</div>
+
+<div class="field">
+    <label>Region</label>
+    <input type="number" name="Region"
+           min="0" max="1"
+           oninput="validateInput(this,0,1,'regionError')"
+           value="{{ request.form.get('Region','') }}" required/>
+    <span class="error-message" id="regionError">
+        Enter only 0 or 1
+    </span>
+</div>
             
                 <button type="submit" class="predict-btn">Predict</button>
             
@@ -425,7 +479,27 @@
         }
         </script>
         
+<script>
+function validateInput(input, min, max, errorId) {
 
+    let value = parseFloat(input.value);
+    let error = document.getElementById(errorId);
+
+    if (input.value === "") {
+        error.style.display = "none";
+        input.classList.remove("input-error");
+        return;
+    }
+
+    if (value < min || value > max) {
+        error.style.display = "block";
+        input.classList.add("input-error");
+    } else {
+        error.style.display = "none";
+        input.classList.remove("input-error");
+    }
+}
+</script>
 </body>
 </html>
 
